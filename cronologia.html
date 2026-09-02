@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cronologia — Alpes Ubaldinorum</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Source+Serif+4:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+<style>
+
+  :root{
+    --bg: #1c1812;
+    --bg-panel: #251f18;
+    --bg-panel-2: #2c251c;
+    --ink: #e9dfc7;
+    --ink-dim: #a99a7c;
+    --ink-faint: #6f6350;
+    --ember: #a13f2c;
+    --ember-bright: #c8583d;
+    --moss: #6b7752;
+    --moss-dim: #4b5439;
+    --line: #3a3225;
+    --gold: #b3934f;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:
+      radial-gradient(ellipse 900px 500px at 20% -5%, rgba(161,63,44,0.12), transparent 60%),
+      radial-gradient(ellipse 700px 400px at 90% 10%, rgba(107,119,82,0.10), transparent 60%),
+      var(--bg);
+    color:var(--ink);
+    font-family:'Source Serif 4', serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:760px; margin:0 auto; padding:0 24px 120px;}
+
+  /* ===== HERO ===== */
+  .hero{
+    padding:76px 0 56px;
+    border-bottom:1px solid var(--line);
+    position:relative;
+  }
+  .hero-eyebrow{
+    font-family:'JetBrains Mono', monospace;
+    font-size:12.5px;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:var(--ember-bright);
+    margin:0 0 18px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .hero-eyebrow::before{
+    content:"";
+    display:inline-block;
+    width:22px; height:1px;
+    background:var(--ember-bright);
+  }
+  .hero h1{
+    font-family:'Fraunces', serif;
+    font-optical-sizing:auto;
+    font-weight:600;
+    font-size:clamp(2.5rem, 8vw, 3.8rem);
+    line-height:1.02;
+    margin:0 0 6px;
+    color:var(--ink);
+    letter-spacing:-0.01em;
+  }
+  .hero h1 em{
+    font-style:italic;
+    font-weight:400;
+    color:var(--ink-dim);
+  }
+  .hero .sub{
+    font-family:'JetBrains Mono', monospace;
+    font-size:13.5px;
+    color:var(--ink-faint);
+    margin:14px 0 30px;
+    letter-spacing:0.02em;
+  }
+  .hero p{
+    font-size:17.5px;
+    line-height:1.68;
+    color:var(--ink-dim);
+    max-width:58ch;
+    margin:0 0 14px;
+  }
+  .hero p strong{color:var(--ink); font-weight:600;}
+
+  .stat-row{
+    display:flex;
+    gap:28px;
+    margin-top:34px;
+    flex-wrap:wrap;
+  }
+  .stat{border-left:2px solid var(--ember); padding-left:12px;}
+  .stat b{
+    display:block;
+    font-family:'Fraunces', serif;
+    font-size:1.9rem;
+    font-weight:600;
+    color:var(--ink);
+    line-height:1;
+  }
+  .stat span{
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px;
+    color:var(--ink-faint);
+    text-transform:uppercase;
+    letter-spacing:0.08em;
+  }
+
+  /* ===== ERA HEADERS ===== */
+  .era{
+    margin-top:64px;
+    margin-bottom:8px;
+    display:flex;
+    align-items:baseline;
+    gap:14px;
+  }
+  .era-range{
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px;
+    color:var(--gold);
+    letter-spacing:0.1em;
+    white-space:nowrap;
+  }
+  .era-title{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    font-style:italic;
+    font-size:1.3rem;
+    color:var(--ink);
+    margin:0;
+  }
+  .era-line{flex:1; height:1px; background:var(--line);}
+  .era-desc{
+    font-size:15px;
+    color:var(--ink-faint);
+    margin:6px 0 28px;
+    max-width:56ch;
+    line-height:1.6;
+  }
+
+  /* ===== RIDGE TIMELINE ===== */
+  .ridge-wrap{position:relative; padding-left:34px;}
+  .ridge-svg{
+    position:absolute;
+    left:0; top:0;
+    width:34px;
+    height:100%;
+  }
+  .ridge-svg path{
+    fill:none;
+    stroke:var(--ink-faint);
+    stroke-width:1.4;
+    opacity:0.55;
+  }
+
+  .event{
+    position:relative;
+    padding:0 0 40px 26px;
+    border-left:1px solid var(--line);
+    margin-left:-1px;
+  }
+  .event:last-child{padding-bottom:4px;}
+  .event::before{
+    content:"";
+    position:absolute;
+    left:-6px; top:4px;
+    width:11px; height:11px;
+    transform:rotate(45deg);
+    background:var(--bg);
+    border:1.6px solid var(--ink-faint);
+  }
+  .event.pivot::before{
+    border-color:var(--ember-bright);
+    background:var(--ember);
+    box-shadow:0 0 0 4px rgba(161,63,44,0.15);
+  }
+  .event.ubaldini::before{
+    border-color:var(--moss);
+    background:var(--moss-dim);
+  }
+
+  .event-year{
+    font-family:'JetBrains Mono', monospace;
+    font-size:14px;
+    font-weight:600;
+    color:var(--ink);
+    letter-spacing:0.02em;
+    margin-bottom:6px;
+    display:block;
+  }
+  .event.pivot .event-year{color:var(--ember-bright);}
+  .event.ubaldini .event-year{color:var(--moss);}
+
+  .event-title{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    font-size:1.15rem;
+    margin:0 0 8px;
+    color:var(--ink);
+    line-height:1.25;
+  }
+  .event-body{
+    font-size:15px;
+    line-height:1.62;
+    color:var(--ink-dim);
+    margin:0;
+    max-width:56ch;
+  }
+  .event-tag{
+    display:inline-block;
+    font-family:'JetBrains Mono', monospace;
+    font-size:10.5px;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color:var(--ink-faint);
+    border:1px solid var(--line);
+    border-radius:3px;
+    padding:2px 7px;
+    margin-top:10px;
+  }
+
+  /* ===== CLOSING ===== */
+  .closing{
+    margin-top:70px;
+    padding-top:36px;
+    border-top:1px solid var(--line);
+  }
+  .closing h2{
+    font-family:'Fraunces', serif;
+    font-style:italic;
+    font-weight:600;
+    font-size:1.5rem;
+    margin:0 0 14px;
+    color:var(--ink);
+  }
+  .closing p{
+    font-size:16px;
+    line-height:1.7;
+    color:var(--ink-dim);
+    max-width:58ch;
+  }
+  .closing .source{
+    margin-top:26px;
+    font-family:'JetBrains Mono', monospace;
+    font-size:11.5px;
+    color:var(--ink-faint);
+    letter-spacing:0.03em;
+  }
+
+  .legend{
+    display:flex;
+    gap:22px;
+    margin-top:18px;
+    flex-wrap:wrap;
+  }
+  .legend-item{
+    display:flex;
+    align-items:center;
+    gap:7px;
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px;
+    color:var(--ink-faint);
+    text-transform:uppercase;
+    letter-spacing:0.06em;
+  }
+  .legend-swatch{
+    width:9px; height:9px;
+    transform:rotate(45deg);
+    border:1.6px solid var(--ink-faint);
+  }
+  .legend-swatch.pivot{border-color:var(--ember-bright); background:var(--ember);}
+  .legend-swatch.ubaldini{border-color:var(--moss); background:var(--moss-dim);}
+
+  @media (max-width:520px){
+    .wrap{padding:0 16px 100px;}
+    .hero{padding:52px 0 40px;}
+    .ridge-wrap{padding-left:26px;}
+    .event{padding-left:20px;}
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+  }
+
+/* page-specific overrides so shared nav/footer coexist with original design */
+.site-header{background:rgba(28,24,18,0.92);}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="nav-wrap">
+    <a href="index.html" class="brand">Alpes <em>Ubaldinorum</em><span>ubaldini.org</span></a>
+    <nav class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="cronologia.html" class="active">Cronologia</a>
+      <a href="sentieristica.html">Sentieristica</a>
+      <a href="bibliografia.html">Bibliografia</a>
+    </nav>
+  </div>
+</header>
+
+
+<div class="wrap">
+
+  <section class="hero">
+    <p class="hero-eyebrow">Gruppo di studio · Castelli Ubaldini</p>
+    <h1>Alpes<br><em>Ubaldinorum</em></h1>
+    <p class="sub">Cronologia dei castelli Ubaldini nel territorio di Firenzuola — da Franco Poli, 2014</p>
+    <p>Per oltre sei secoli una consorteria feudale di probabile origine longobarda ha tenuto i valichi appenninici tra Firenze e Bologna, presidiando il territorio con una rete di <strong>oltre 33 castelli</strong>. Questa cronologia segue la loro ascesa, il lungo conflitto con la Repubblica Fiorentina e la sistematica distruzione dei loro luoghi.</p>
+    <div class="stat-row">
+      <div class="stat"><b>~900</b><span>anni di presenza sul territorio</span></div>
+      <div class="stat"><b>33+</b><span>castelli censiti dal Repetti</span></div>
+      <div class="stat"><b>1373</b><span>caduta dell'ultimo castello</span></div>
+    </div>
+  </section>
+
+  <div class="legend">
+    <div class="legend-item"><span class="legend-swatch"></span> evento</div>
+    <div class="legend-item"><span class="legend-swatch ubaldini"></span> potere ubaldini</div>
+    <div class="legend-item"><span class="legend-swatch pivot"></span> vittoria fiorentina</div>
+  </div>
+
+  <!-- ERA 1 -->
+  <div class="era">
+    <span class="era-range">570 – 1100</span>
+    <h2 class="era-title">Le origini nell'Alpe</h2>
+    <div class="era-line"></div>
+  </div>
+  <p class="era-desc">Prima ancora della prima citazione documentata, la tradizione colloca sui crinali tra Mugello e Romagna una stirpe di guardiani di confine.</p>
+
+  <div class="ridge-wrap">
+    <div class="event ubaldini">
+      <span class="event-year">570 – 712</span>
+      <h3 class="event-title">I guardiani del confine bizantino</h3>
+      <p class="event-body">Un Ubaldino è ricordato come "Signore del Mugello e dell'Alpi Fiorentine" già in epoca longobarda, quando queste terre segnavano il confine con l'esarcato bizantino di Ravenna.</p>
+      <span class="event-tag">tradizione storiografica</span>
+    </div>
+    <div class="event">
+      <span class="event-year">995</span>
+      <h3 class="event-title">Il primo atto scritto</h3>
+      <p class="event-body">Un rogito datato 14 dicembre attesta per la prima volta l'esistenza di un castello sulle Alpes Ubaldinorum: il "castellum de Riofrido", futuro Rifredo.</p>
+      <span class="event-tag">fonte: rogito 995</span>
+    </div>
+    <div class="event ubaldini">
+      <span class="event-year">1100</span>
+      <h3 class="event-title">Prima citazione ufficiale</h3>
+      <p class="event-body">Un Ubaldini compare nei documenti del Monastero di San Pietro in Luco come vassallo della contessa Matilde di Canossa. Alla sua morte la famiglia sposta il proprio interesse verso il contado fiorentino.</p>
+      <span class="event-tag">Monastero di Luco</span>
+    </div>
+  </div>
+
+  <!-- ERA 2 -->
+  <div class="era">
+    <span class="era-range" id="origini">1100 – 1251</span>
+    <h2 class="era-title">L'apice del dominio</h2>
+    <div class="era-line"></div>
+  </div>
+  <p class="era-desc">La casata si dirama in tre rami — Montaccianico, Galliano, Senni — e ottiene dagli imperatori il riconoscimento del proprio potere su Mugello e Alto Santerno.</p>
+
+  <div class="ridge-wrap">
+    <div class="event ubaldini">
+      <span class="event-year">1184</span>
+      <h3 class="event-title">L'ospite di Federico Barbarossa</h3>
+      <p class="event-body">L'imperatore è ospite di Ubaldino Ubaldini: secondo la tradizione familiare è in questa occasione che vengono assegnati lo stemma e il motto della casata.</p>
+    </div>
+    <div class="event ubaldini">
+      <span class="event-year">1220</span>
+      <h3 class="event-title">Il diploma di Federico II</h3>
+      <p class="event-body">Il 25 novembre, da Montemalo presso Roma, Federico II di Svevia rinnova agli Ubaldini l'investitura di oltre una dozzina di castelli e dei tre pivieri di Cornacchiaia, Camaggiore e Bordignano.</p>
+      <span class="event-tag">diploma imperiale</span>
+    </div>
+    <div class="event ubaldini">
+      <span class="event-year">1246</span>
+      <h3 class="event-title">Consolidamento sotto Federico II</h3>
+      <p class="event-body">Ulteriori benefici legittimano definitivamente il dominio della casata sull'area del Mugello e dell'Alpes Ubaldinorum, l'Alto Mugello.</p>
+    </div>
+  </div>
+
+  <!-- ERA 3 -->
+  <div class="era">
+    <span class="era-range">1251 – 1350</span>
+    <h2 class="era-title">La guerra con Firenze</h2>
+    <div class="era-line"></div>
+  </div>
+  <p class="era-desc">L'adesione al ghibellinismo toscano apre un secolo di conflitto. Firenze fonda Firenzuola per contenere gli Ubaldini "ultra Alpes" — ma la nuova terra viene incendiata due volte prima di reggere.</p>
+
+  <div class="ridge-wrap">
+    <div class="event ubaldini">
+      <span class="event-year">1251</span>
+      <h3 class="event-title">La Lega Ghibellina</h3>
+      <p class="event-body">Il ramo di Montaccianico aderisce alla Lega Ghibellina di Toscana, dando avvio alla secolare guerra contro Firenze.</p>
+    </div>
+    <div class="event pivot">
+      <span class="event-year">1306</span>
+      <h3 class="event-title">La caduta di Montaccianico</h3>
+      <p class="event-body">Dopo un assedio da maggio ad agosto, i Fiorentini prendono e distruggono Montaccianico. Il 29 aprile il Consiglio dei Cento delibera la costruzione di due nuove terre di confine: Scarperia e Firenzuola.</p>
+      <span class="event-tag">svolta decisiva</span>
+    </div>
+    <div class="event">
+      <span class="event-year">1332</span>
+      <h3 class="event-title">Nasce Firenzuola</h3>
+      <p class="event-body">L'8 aprile inizia finalmente l'edificazione della "terra nuova" di Firenzuola, ventisei anni dopo la delibera.</p>
+    </div>
+    <div class="event ubaldini">
+      <span class="event-year">1342</span>
+      <h3 class="event-title">Firenzuola arsa e disfatta</h3>
+      <p class="event-body">Ancora incompiuta nelle sue fortificazioni, Firenzuola viene incendiata da Vanni da Susinana degli Ubaldini di Palazzuolo, che riconquistano i tre pivieri.</p>
+    </div>
+    <div class="event pivot">
+      <span class="event-year">1349 – 1350</span>
+      <h3 class="event-title">La guerra di sterminio</h3>
+      <p class="event-body">Dopo l'uccisione di un amico del Petrarca presso Fonte Manzina, Firenze scatena una campagna sistematica: cadono Montegemoli, Coloreta, Peglio, Belmonte e Bordignano.</p>
+      <span class="event-tag">campagna militare</span>
+    </div>
+    <div class="event ubaldini">
+      <span class="event-year">1351</span>
+      <h3 class="event-title">Firenzuola devastata di nuovo</h3>
+      <p class="event-body">Ancora priva di mura, fossi e steccati, Firenzuola viene investita e arsa una seconda volta dagli Ubaldini in ritirata.</p>
+    </div>
+  </div>
+
+  <!-- ERA 4 -->
+  <div class="era">
+    <span class="era-range">1359 – 1373</span>
+    <h2 class="era-title">L'ultima resistenza</h2>
+    <div class="era-line"></div>
+  </div>
+  <p class="era-desc">Uno dopo l'altro, per acquisto, tradimento o assedio, gli ultimi castelli passano a Firenze. Nel giro di quattordici anni la consorteria perde ogni presidio sulle Alpes.</p>
+
+  <div class="ridge-wrap">
+    <div class="event pivot">
+      <span class="event-year">1359 – 1360</span>
+      <h3 class="event-title">Le prime vendite</h3>
+      <p class="event-body">Firenze acquista da alcune famiglie Ubaldini i castelli di Monte Coloreto e di Monte Gemoli, ai margini opposti della "terra" di Firenzuola.</p>
+    </div>
+    <div class="event">
+      <span class="event-year">1371</span>
+      <h3 class="event-title">La terza ricostruzione</h3>
+      <p class="event-body">Firenzuola viene rifondata e finalmente cinta di mura, dopo le distruzioni e gli incendi subiti nei decenni precedenti.</p>
+    </div>
+    <div class="event pivot">
+      <span class="event-year">1372</span>
+      <h3 class="event-title">Tirli e Susinana</h3>
+      <p class="event-body">La Repubblica Fiorentina compra i castelli Ubaldini di Tirli e Susinana per 7.000 fiorini d'oro, liberando quasi per intero la zona dalla soggezione feudale.</p>
+      <span class="event-tag">7.000 fiorini d'oro</span>
+    </div>
+    <div class="event pivot">
+      <span class="event-year">1373</span>
+      <h3 class="event-title">La fine sull'Alpe</h3>
+      <p class="event-body">Cade il castello del Frassino a Palazzuolo; Maghinardo Novello, il più valoroso della casata, viene decapitato a Firenze. È l'epilogo del dominio feudale degli Ubaldini sulle Alpes.</p>
+      <span class="event-tag">fine del dominio</span>
+    </div>
+  </div>
+
+  <!-- ERA 5 -->
+  <div class="era">
+    <span class="era-range">1470 – oggi</span>
+    <h2 class="era-title">Ciò che resta</h2>
+    <div class="era-line"></div>
+  </div>
+
+  <div class="ridge-wrap">
+    <div class="event">
+      <span class="event-year">1470 – 1502</span>
+      <h3 class="event-title">La rocca di Antonio da Sangallo</h3>
+      <p class="event-body">Firenzuola raggiunge la forma giunta fino a noi: la sovrintendenza ai lavori, affidata nel 1496 ad Antonio da Sangallo il Vecchio, trasforma l'impianto medievale in una delle prime cinte bastionate resistenti alle armi da fuoco.</p>
+    </div>
+    <div class="event">
+      <span class="event-year">Oggi</span>
+      <h3 class="event-title">Trentatré castelli, ridotti a tracce</h3>
+      <p class="event-body">Dei siti elencati dal Repetti restano per lo più fondamenta, cisterne interrate e tratti di muratura. La loro memoria sopravvive nella toponomastica e nella struttura dei "popoli" che ancora oggi ricalca l'antica rete castellana.</p>
+    </div>
+  </div>
+
+  <section class="closing">
+    <h2>Perché questa cronologia</h2>
+    <p>Ogni voce qui è un punto d'ingresso alla scheda completa dedicata al singolo castello nella ricerca di Franco Poli — pensata come prima mappa per orientarsi prima di entrare nel dettaglio documentario, sito per sito.</p>
+    <p class="source">Fonte: Franco Poli, <em>Alpes Ubaldinorum</em>, 2014 — I castelli Ubaldini nel territorio del Comune di Firenzuola.</p>
+  </section>
+
+</div>
+
+
+<footer class="site-footer">
+  <div class="wrap">
+    <p>Alpes Ubaldinorum &middot; ubaldini.org</p>
+    <p>Fonte: F. Poli, <em>Alpes Ubaldinorum</em>, 2014</p>
+  </div>
+</footer>
+
+</body>
+</html>
